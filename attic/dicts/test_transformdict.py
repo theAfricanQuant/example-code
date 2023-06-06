@@ -189,7 +189,7 @@ class TestTransformDict(TransformDictTestBase):
             next(it)
         d['Foo'] = 5
         d['BAR'] = 6
-        self.assertEqual(set(x for x in d), {'Foo', 'BAR'})
+        self.assertEqual(set(d), {'Foo', 'BAR'})
 
     def test_first_key_retained(self):
         d = TransformDict(str.lower, {'Foo': 5, 'BAR': 6})

@@ -31,7 +31,7 @@ import html
 @singledispatch  # <1>
 def htmlize(obj):
     content = html.escape(repr(obj))
-    return '<pre>{}</pre>'.format(content)
+    return f'<pre>{content}</pre>'
 
 @htmlize.register(str)  # <2>
 def _(text):            # <3>

@@ -14,7 +14,7 @@ import time
 
 def spin(msg, done):  # <1>
     for char in itertools.cycle('|/-\\'):  # <3>
-        status = char + ' ' + msg
+        status = f'{char} {msg}'
         print(status, flush=True, end='\r')
         if done.wait(.1):  # <5>
             break

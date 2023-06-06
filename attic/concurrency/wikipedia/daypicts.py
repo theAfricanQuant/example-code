@@ -66,7 +66,7 @@ def get_picture_url(iso_date):
     pict_url = POTD_IMAGE_RE.search(response.text)
     if pict_url is None:
         raise NoPictureForDate(iso_date)
-    return 'http:' + pict_url.group(1)
+    return f'http:{pict_url.group(1)}'
 
 
 def validate_date(text):
@@ -87,7 +87,7 @@ def validate_date(text):
 
 
 def gen_month_dates(iso_month):
-    first = datetime.datetime.strptime(iso_month+'-01', ISO_DATE_FMT)
+    first = datetime.datetime.strptime(f'{iso_month}-01', ISO_DATE_FMT)
     one_day = datetime.timedelta(days=1)
     date = first.date()
     while date.month == first.month:
@@ -150,7 +150,7 @@ def get_pictures(dates, verbose=False):
             url = url.replace(REMOTE_PICT_BASE_URL, PICT_BASE_URL)
         response = requests.get(url)
         if response.status_code != 200:
-            warnings.warn('HTTP code {}: {}'.format(response.status_code, url))
+            warnings.warn(f'HTTP code {response.status_code}: {url}')
             continue
         octets = response.content
         if date not in PICT_EXCEPTIONS:

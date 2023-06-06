@@ -20,14 +20,13 @@ from flags import BASE_URL, save_flag, show, main  # <2>
 async def get_flag(cc):  # <3>
     url = '{}/{cc}/{cc}.gif'.format(BASE_URL, cc=cc.lower())
     resp = await aiohttp.request('GET', url)  # <4>
-    image = await resp.read()  # <5>
-    return image
+    return await resp.read()
 
 
 async def download_one(cc):  # <6>
     image = await get_flag(cc)  # <7>
     show(cc)
-    save_flag(image, cc.lower() + '.gif')
+    save_flag(image, f'{cc.lower()}.gif')
     return cc
 
 

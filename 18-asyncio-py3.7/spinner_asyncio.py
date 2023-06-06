@@ -13,7 +13,7 @@ import itertools
 
 async def spin(msg):  # <1>
     for char in itertools.cycle('|/-\\'):
-        status = char + ' ' + msg
+        status = f'{char} {msg}'
         print(status, flush=True, end='\r')
         try:
             await asyncio.sleep(.1)  # <2>

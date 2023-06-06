@@ -29,8 +29,7 @@ async def get_flag(base_url, cc): # <2>
     url = '{}/{cc}/{cc}.gif'.format(base_url, cc=cc.lower())
     with closing(await aiohttp.request('GET', url)) as resp:
         if resp.status == 200:
-            image = await resp.read()
-            return image
+            return await resp.read()
         elif resp.status == 404:
             raise web.HTTPNotFound()
         else:
@@ -49,7 +48,7 @@ async def download_one(cc, base_url, semaphore, verbose):  # <3>
     except Exception as exc:
         raise FetchError(cc) from exc  # <7>
     else:
-        save_flag(image, cc.lower() + '.gif')  # <8>
+        save_flag(image, f'{cc.lower()}.gif')
         status = HTTPStatus.ok
         msg = 'OK'
 
@@ -73,13 +72,13 @@ async def downloader_coro(cc_list, base_url, verbose, concur_req):  # <1>
         try:
             res = await future  # <7>
         except FetchError as exc:  # <8>
-            country_code = exc.country_code  # <9>
             try:
                 error_msg = exc.__cause__.args[0]  # <10>
             except IndexError:
                 error_msg = exc.__cause__.__class__.__name__  # <11>
             if verbose and error_msg:
                 msg = '*** Error for {}: {}'
+                country_code = exc.country_code  # <9>
                 print(msg.format(country_code, error_msg))
             status = HTTPStatus.error
         else:
